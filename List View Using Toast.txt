@@ -1,0 +1,73 @@
+XML
+#########
+
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <TextView
+        android:id="@+id/tv1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Courses"
+        android:textSize="40dp"
+        app:layout_constraintBottom_toTopOf="@+id/lv"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.412"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ListView
+        android:id="@+id/lv"
+        android:layout_width="330dp"
+        android:layout_height="284dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.493"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.472" />
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+
+JAVA
+############
+
+package com.example.listview_toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
+    TextView tv1;
+    ListView lv;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        tv1=(TextView) findViewById(R.id.tv1);
+        lv=(ListView) findViewById(R.id.lv);
+
+        String[] Courses={"MCA","MBA","BBA","BCA"};
+        ArrayAdapter adapter=new ArrayAdapter(this, android.R.layout.simple_list_item_1,Courses);
+        lv.setAdapter(adapter);
+        lv.setOnItemClickListener(this);
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+        String itemname=lv.getItemAtPosition(i).toString();
+        Toast.makeText(this,itemname, Toast.LENGTH_SHORT).show();
+    }
+}

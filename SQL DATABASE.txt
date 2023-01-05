@@ -1,0 +1,263 @@
+database
+############
+package com.example.sql_database;
+
+import android.content.ContentValues;
+import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
+
+import androidx.annotation.Nullable;
+public class database extends SQLiteOpenHelper {
+    public database(Context context) {
+        super(context, "userdata.db", null, 1);
+    }
+
+    @Override
+    public void onCreate(SQLiteDatabase DB) {
+        DB.execSQL("create Table Userdetails(name TEXT primary key,phone Text)");
+    }
+
+    @Override
+    public void onUpgrade(SQLiteDatabase DB, int i, int i1) {
+        DB.execSQL("drop Table if exists Userdetails");
+    }
+
+    public boolean insertdata(String name, String phone) {
+        SQLiteDatabase DB = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("name", name);
+        contentValues.put("phone", phone);
+        long result = DB.insert("Userdetails", null, contentValues);
+        if (result == -1) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+
+    public boolean updatedata(String name, String phone) {
+        SQLiteDatabase DB = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+
+        contentValues.put("phone", phone);
+        Cursor cursor = DB.rawQuery("Select * from Userdetails where name=?", new String[]{name});
+        if (cursor.getCount() > 0) {
+            long result = DB.update("Userdetails", contentValues, "name=?", new String[]{name});
+            if (result == -1) {
+                return false;
+            } else {
+                return true;
+            }
+        } else {
+            return false;
+        }
+
+    }
+
+    public boolean deletedata(String name) {
+        SQLiteDatabase DB = this.getWritableDatabase();
+
+        Cursor cursor = DB.rawQuery("Select * from Userdetails where name=?", new String[]{name});
+        if (cursor.getCount() > 0) {
+            long result = DB.delete("Userdetails", "name=?", new String[]{name});
+            if (result == -1) {
+                return false;
+            } else {
+                return true;
+            }
+        } else {
+            return false;
+        }
+
+    }
+
+
+    public Cursor getdata () {
+        SQLiteDatabase DB = this.getWritableDatabase();
+
+        Cursor cursor = DB.rawQuery("Select * from Userdetails ",null);
+        return cursor;
+
+    }
+}
+
+
+
+Javacode
+###########
+
+package com.example.sql_database;
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.database.Cursor;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
+
+public class MainActivity extends AppCompatActivity {
+    EditText name,phone;
+    Button insert,update,delete,view;
+    TextView tv;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        insert=findViewById(R.id.insert);
+        update=findViewById(R.id.update);
+        delete=findViewById(R.id.delete);
+        view=findViewById(R.id.view);
+        name=findViewById(R.id.name);
+        phone=findViewById(R.id.phone);
+        tv=findViewById(R.id.tv);
+
+        database DB=new database(this);
+
+        insert.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String Name=name.getText().toString();
+                String Phone=phone.getText().toString();
+
+                Boolean checkinsert=DB.insertdata(Name,Phone);
+                if(checkinsert==true){
+                    Toast.makeText(MainActivity.this, "Data Inserted", Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    Toast.makeText(MainActivity.this, "Not Inserted", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        update.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String Name=name.getText().toString();
+                String Phone=phone.getText().toString();
+
+                Boolean checkupdate=DB.updatedata(Name,Phone);
+                if(checkupdate==true){
+                    Toast.makeText(MainActivity.this, "Data Updated", Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    Toast.makeText(MainActivity.this, "Not Updated", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String Name=name.getText().toString();
+
+
+                Boolean checkdelete=DB.deletedata(Name);
+                if(checkdelete==true){
+                    Toast.makeText(MainActivity.this, "Data deleted", Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    Toast.makeText(MainActivity.this, "Not deleted", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Cursor res= DB.getdata();
+                if(res.getCount()==0){
+                    Toast.makeText(MainActivity.this, "NO entry exists", Toast.LENGTH_SHORT).show();
+                    return;
+
+                }
+
+                StringBuffer buffer=new StringBuffer();
+                while (res.moveToNext()){
+                    buffer.append("Name :"+res.getString(0)+"\n");
+                    buffer.append("Phone :"+res.getString(1)+"\n");
+
+                }
+                Toast.makeText(MainActivity.this, buffer.toString(), Toast.LENGTH_SHORT).show();
+
+            }
+        });
+    }
+}
+
+
+XML
+###################
+
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <EditText
+        android:id="@+id/name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Name"
+        android:textSize="20dp"
+
+        />
+
+    <EditText
+        android:id="@+id/phone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:hint="Phone No"
+        android:layout_below="@+id/name"
+
+       />
+    <Button
+        android:id="@+id/insert"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="INSERT"
+        android:layout_marginLeft="5dp"
+        android:layout_below="@+id/phone"/>
+
+    <Button
+        android:id="@+id/update"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="UPDATE"
+        android:layout_marginLeft="105dp"
+        android:layout_below="@+id/phone"/>
+    <Button
+        android:id="@+id/delete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="DELETE"
+        android:layout_marginLeft="205dp"
+        android:layout_below="@+id/phone"/>
+
+    <Button
+        android:id="@+id/view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="VIEW"
+        android:layout_marginLeft="305dp"
+        android:layout_below="@+id/phone"/>
+    <TextView
+        android:id="@+id/tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/view"
+        android:layout_marginTop="50dp"
+        android:textSize="25dp"
+        />
+
+
+</RelativeLayout>

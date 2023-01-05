@@ -1,0 +1,63 @@
+XML
+#########
+
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <ListView
+        android:id="@+id/lv"
+        android:layout_width="292dp"
+        android:layout_height="235dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.334" />
+
+    <TextView
+        android:id="@+id/tv"
+        android:layout_width="163dp"
+        android:layout_height="38dp"
+        android:layout_marginTop="48dp"
+        android:text="Courses"
+        android:textSize="25dp"
+        app:layout_constraintBottom_toTopOf="@+id/lv"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.415"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.039" />
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+
+JAVA
+############
+
+package com.example.listview;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.os.Bundle;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+
+public class MainActivity extends AppCompatActivity {
+    ListView lv;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        lv = (ListView) findViewById(R.id.lv);
+        String[] Courses={"MCA","MBA","BCA","BBA"};
+        ArrayAdapter adapter=new ArrayAdapter(this, android.R.layout.simple_list_item_1, Courses);
+        lv.setAdapter(adapter);
+    }
+}

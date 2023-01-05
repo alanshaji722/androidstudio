@@ -1,0 +1,49 @@
+XML
+#########
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <Button
+        android:id="@+id/bt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:onClick="Change"
+        android:text="Change"
+        />
+</LinearLayout>
+
+
+
+
+JAVA
+############
+
+package com.example.backgroudcolor_button;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+
+public class MainActivity extends AppCompatActivity {
+    View v;
+    Button bt;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        bt=(Button) findViewById(R.id.bt);
+       v=this.getWindow().getDecorView();
+
+    }
+    public void Change(View view){
+        v.setBackgroundResource(android.R.color.holo_blue_bright);
+    }
+}
