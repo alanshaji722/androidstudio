@@ -8,15 +8,22 @@
 
     <TextView
         android:id="@+id/m"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="0dp"
+        android:text="CALCULATOR!"
+        android:textAlignment="center"
+        android:textSize="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/a"
+        android:id="@+id/inp1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/m"
@@ -24,40 +31,58 @@
         android:layout_alignParentStart="true"
         android:layout_marginStart="0dp"
         android:layout_marginTop="5dp"
-        android:text="Ajay" />
+        android:hint="input1" />
 
     <EditText
-        android:id="@+id/b"
+        android:id="@+id/inp2"
         android:layout_width="match_parent"
         android:inputType="textPersonName"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/a"
-        android:text="Sachin" />
+        android:layout_below="@+id/inp1"
+        android:hint="input2" />
 
-    <EditText
-        android:id="@+id/c"
+    <Button
+        android:id="@+id/add"
         android:layout_width="match_parent"
-        android:inputType="textPersonName"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/b"
-        android:text="Sumit" />
+        android:layout_below="@+id/inp2"
+        android:onClick="add"
+        android:text="ADD" />
 
-    <EditText
-        android:id="@+id/d"
+    <Button
+        android:id="@+id/sub"
         android:layout_width="match_parent"
-        android:inputType="textPersonName"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/c"
-        android:text="Tarun" />
+        android:layout_below="@+id/add"
+        android:onClick="sub"
+        android:text="SUB" />
 
-    <EditText
-        android:id="@+id/e"
+    <Button
+        android:id="@+id/mul"
         android:layout_width="match_parent"
-        android:inputType="textPersonName"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/d"
-        android:text="Yogesh" />
+        android:layout_below="@+id/sub"
+        android:onClick="mul"
+        android:text="MUL" />
+
+    <Button
+        android:id="@+id/div"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/mul"
+        android:onClick="div"
+        android:text="DIV" />
+
+    <TextView
+        android:id="@+id/out"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/div"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="23dp"
+        android:hint="OUTPUT"
+        android:textAlignment="center"
+        android:textSize="24sp" />
 
 </RelativeLayout>
-
-
